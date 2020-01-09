@@ -16,6 +16,9 @@ import ua.com.univerpulse.toyshop.model.dto.PaymentDto;
 import ua.com.univerpulse.toyshop.model.entities.Payment;
 import ua.com.univerpulse.toyshop.model.services.PaymentService;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 /**
  * @author Danny Briskin (sql.coach.kiev@gmail.com)
  */
@@ -116,6 +119,20 @@ public class AppController {
         } catch (PaymentNotFoundException e) {
             throw new ResponseStatusException(
                     HttpStatus.NOT_FOUND, "Payment ID [" + id + NOT_FOUND, e);
+        }
+    }
+
+    @GetMapping(value = "/api/customerPayments/{id}"
+            , headers = {"Accept=application/json"})
+    public ResponseWrapper<List<PaymentDto>> findCustomerPayment(@PathVariable Integer id) {
+        try {
+            List<PaymentDto> payments = paymentService.findByCustomerId(id).stream()
+                    .map(PaymentDto::new)
+                    .collect(Collectors.toList());
+            return new ResponseWrapper<>(environment, payments);
+        } catch (PaymentNotFoundException e) {
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND, "Payment of customer ID [" + id + NOT_FOUND, e);
         }
     }
 }

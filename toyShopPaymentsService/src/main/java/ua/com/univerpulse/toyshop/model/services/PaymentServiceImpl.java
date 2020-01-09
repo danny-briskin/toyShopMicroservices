@@ -15,6 +15,7 @@ import ua.com.univerpulse.toyshop.model.repositories.CustomerRepository;
 import ua.com.univerpulse.toyshop.model.repositories.PaymentRepository;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -108,6 +109,16 @@ public class PaymentServiceImpl extends AbstractService implements PaymentServic
         Optional<Payment> paym = this.paymentRepository.findById(id);
         if (paym.isPresent()) {
             return paym.get();
+        } else {
+            throw new PaymentNotFoundException("id " + id);
+        }
+    }
+
+    @Override
+    public List<Payment> findByCustomerId(Integer id) throws PaymentNotFoundException {
+        List<Payment> paym = this.paymentRepository.findAllByCustomerId(id);
+        if (!paym.isEmpty()) {
+            return paym;
         } else {
             throw new PaymentNotFoundException("id " + id);
         }

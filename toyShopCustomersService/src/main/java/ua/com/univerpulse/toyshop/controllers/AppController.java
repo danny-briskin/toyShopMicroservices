@@ -11,6 +11,7 @@ import ua.com.univerpulse.toyshop.exceptions.CustomerNotFoundException;
 import ua.com.univerpulse.toyshop.exceptions.DateParseException;
 import ua.com.univerpulse.toyshop.model.dto.CustomerDto;
 import ua.com.univerpulse.toyshop.model.entities.Customer;
+import ua.com.univerpulse.toyshop.model.repositories.PaymentClient;
 import ua.com.univerpulse.toyshop.model.services.CustomerService;
 
 import java.security.Principal;
@@ -25,15 +26,18 @@ import static org.hibernate.validator.internal.util.Contracts.assertNotNull;
 public class AppController {
     private final CustomerService customerService;
 
+    private PaymentClient paymentClient;
+
     private static final String NOT_FOUND = "] was not found";
     private static final String CUSTOMER = "Customer with ID [";
     private static final String DELETED = "] was deleted";
 
     @Contract(pure = true)
-    public AppController(@Autowired CustomerService customerService) {
+    public AppController(@Autowired CustomerService customerService,
+                         @Autowired PaymentClient paymentClient) {
         this.customerService = customerService;
+        this.paymentClient = paymentClient;
     }
-
 
     /**
      * 5.1 Create customer
@@ -97,5 +101,10 @@ public class AppController {
             throw new ResponseStatusException(
                     HttpStatus.NOT_FOUND, CUSTOMER + customerId + NOT_FOUND, e);
         }
+    }
+
+    @GetMapping("/api/findCustomer/{id}/payments")
+    public Object getPaymentsForCustomer(@PathVariable int id) {
+        return this.paymentClient.getPaymentsForCustomer(id);
     }
 }

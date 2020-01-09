@@ -6,6 +6,8 @@ import ua.com.univerpulse.toyshop.exceptions.PaymentNotFoundException;
 import ua.com.univerpulse.toyshop.model.dto.PaymentDto;
 import ua.com.univerpulse.toyshop.model.entities.Payment;
 
+import java.util.List;
+
 /**
  * @author Danny Briskin (sql.coach.kiev@gmail.com)
  */
@@ -20,4 +22,6 @@ public interface PaymentService {
     Payment makePayment(PaymentDto paymentDto) throws CustomerNotFoundException;
 
     Payment findById(Integer id) throws PaymentNotFoundException;
+
+    List<Payment> findByCustomerId(Integer id) throws PaymentNotFoundException;
 }

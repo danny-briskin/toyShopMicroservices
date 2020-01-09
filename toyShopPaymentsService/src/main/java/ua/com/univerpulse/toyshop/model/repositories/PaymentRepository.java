@@ -7,6 +7,8 @@ import ua.com.univerpulse.toyshop.model.entities.Customer;
 import ua.com.univerpulse.toyshop.model.entities.Payment;
 import ua.com.univerpulse.toyshop.model.entities.projections.PaymentProjection;
 
+import java.util.List;
+
 /**
  * @author Danny Briskin (sql.coach.kiev@gmail.com)
  */
@@ -16,6 +18,7 @@ import ua.com.univerpulse.toyshop.model.entities.projections.PaymentProjection;
 public interface PaymentRepository extends PagingAndSortingRepository<Payment, Integer> {
     int deleteAllByCustomer(Customer customer);
 
+    List<Payment> findAllByCustomerId(Integer id);
 }
 
 

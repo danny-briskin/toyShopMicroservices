@@ -5,7 +5,6 @@ import org.jetbrains.annotations.Contract;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import ua.com.univerpulse.toyshop.exceptions.CustomerNotFoundException;
@@ -73,10 +72,9 @@ public class AppController {
     @GetMapping(value = "/api/findCustomer/{id}"
             , headers = {"Accept=application/json"})
     public ResponseEntity<CustomerDto> findCustomer(@PathVariable Integer id, Principal principal) {
-        OAuth2Authentication authentication = (OAuth2Authentication) principal;
         Customer customer = customerService.findById(id);
         CustomerDto customerDto = new CustomerDto(customer);
-        customerDto.setBillingAddress(authentication.getName());
+        customerDto.setBillingAddress(principal.getName());
         return ResponseEntity.status(HttpStatus.OK)
                 .body(customerDto);
     }

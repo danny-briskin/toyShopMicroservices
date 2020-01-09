@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import org.springframework.data.rest.core.annotation.RestResource;
+import org.springframework.security.access.prepost.PreAuthorize;
 import ua.com.univerpulse.toyshop.model.entities.Customer;
 import ua.com.univerpulse.toyshop.model.entities.projections.CustomerProjection;
 
@@ -13,7 +14,7 @@ import ua.com.univerpulse.toyshop.model.entities.projections.CustomerProjection;
  */
 @RepositoryRestResource(collectionResourceRel = "customers", path = "customers"
         , excerptProjection = CustomerProjection.class)
-//@PreAuthorize("hasAnyRole('USER','ADMIN')")
+@PreAuthorize("hasAnyRole('USER','ADMIN')")
 public interface CustomerRepository extends PagingAndSortingRepository<Customer, Integer>
         , JpaSpecificationExecutor<Customer> {
     @Override

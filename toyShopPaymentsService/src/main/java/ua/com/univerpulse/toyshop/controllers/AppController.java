@@ -113,8 +113,6 @@ public class AppController {
             Payment payment = paymentService.findById(id);
             return new ResponseWrapper<>(
                     environment, new PaymentDto(payment));
-//            return ResponseEntity.status(HttpStatus.OK)
-//                    .body(new PaymentDto(payment));
         } catch (PaymentNotFoundException e) {
             throw new ResponseStatusException(
                     HttpStatus.NOT_FOUND, "Payment ID [" + id + NOT_FOUND, e);

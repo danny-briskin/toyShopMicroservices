@@ -14,8 +14,6 @@ import ua.com.univerpulse.toyshop.model.entities.Customer;
 import ua.com.univerpulse.toyshop.model.repositories.PaymentClient;
 import ua.com.univerpulse.toyshop.model.services.CustomerService;
 
-import java.security.Principal;
-
 import static org.hibernate.validator.internal.util.Contracts.assertNotNull;
 
 /**
@@ -75,10 +73,12 @@ public class AppController {
 
     @GetMapping(value = "/api/findCustomer/{id}"
             , headers = {"Accept=application/json"})
-    public ResponseEntity<CustomerDto> findCustomer(@PathVariable Integer id, Principal principal) {
+    public ResponseEntity<CustomerDto> findCustomer(@PathVariable Integer id
+    //        , @NotNull Principal principal
+    ) {
         Customer customer = customerService.findById(id);
         CustomerDto customerDto = new CustomerDto(customer);
-        customerDto.setBillingAddress(principal.getName());
+      //  customerDto.setBillingAddress(principal.getName());
         return ResponseEntity.status(HttpStatus.OK)
                 .body(customerDto);
     }
@@ -106,5 +106,16 @@ public class AppController {
     @GetMapping("/api/findCustomer/{id}/payments")
     public Object getPaymentsForCustomer(@PathVariable int id) {
         return this.paymentClient.getPaymentsForCustomer(id);
+    }
+    @PostMapping("/secret")
+    @CrossOrigin
+    public String secretService() {
+        return "A secret message";
+    }
+
+    @GetMapping("/secret2")
+    @CrossOrigin
+    public String secretS2ervice() {
+        return "A secret2  message";
     }
 }

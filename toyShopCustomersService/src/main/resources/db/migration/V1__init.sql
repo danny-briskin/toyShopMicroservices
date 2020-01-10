@@ -17,3 +17,22 @@ CREATE TABLE payments
     customerID    int       NOT NULL,
     foreign key (customerID) references customers (ID)
 );
+
+CREATE TABLE st_users
+(
+    userId                  int         NOT NULL auto_increment PRIMARY KEY,
+    firstName               varchar(50) NOT NULL,
+    lastName                varchar(50) NOT NULL,
+    email                   varchar(50) NOT NULL,
+    password                varchar(250) NOT NULL,
+    enabled                 boolean,
+    created                 TIMESTAMP
+);
+
+CREATE TABLE st_roles
+(
+    roleId                  int         NOT NULL auto_increment PRIMARY KEY,
+    roleName                varchar(50) NOT NULL,
+    userId                  int,
+    foreign key (userId) references st_users (userId)
+);

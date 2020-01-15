@@ -24,4 +24,5 @@ public class ToyShopServiceManagementApplication {
     public RestTemplate restTemplate(@NotNull RestTemplateBuilder builder) {
         return builder.build();
     }
+
 }

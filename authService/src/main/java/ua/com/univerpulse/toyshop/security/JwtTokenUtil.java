@@ -1,20 +1,18 @@
-package ua.com.univerpulse.toyshop.config.security;
+package ua.com.univerpulse.toyshop.security;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import lombok.Data;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -24,6 +22,7 @@ import java.util.stream.Collectors;
  * for toyshopmicros project.
  */
 @Component
+@Data
 public class JwtTokenUtil implements Serializable {
     private static final long serialVersionUID = -25502165626007488L;
     @Value("${jwt.tokenLive:#{24*60*60}}")
@@ -31,6 +30,15 @@ public class JwtTokenUtil implements Serializable {
 
     @Value("${jwt.secretKey:JwtSecretKey}")
     private String secret;
+
+    @Value("${security.jwt.uri:/auth/**}")
+    private String uri;
+
+    @Value("${security.jwt.header:Authorization}")
+    private String header;
+
+    @Value("${security.jwt.prefix:Bearer }")
+    private String prefix;
 
     //retrieve username from jwt token
     public String getUsernameFromToken(String token) {
@@ -47,18 +55,9 @@ public class JwtTokenUtil implements Serializable {
         return claimsResolver.apply(claims);
     }
 
-    public UsernamePasswordAuthenticationToken getUserWithAuthorities(String token) {
-        final Claims claims = this.getAllClaimsFromToken(token);
-        String username = claims.getSubject();
-        List<String> authorities = (List<String>) claims.get("authorities");
-        return new UsernamePasswordAuthenticationToken(
-                username, null, authorities.stream()
-                .map(SimpleGrantedAuthority::new).collect(Collectors.toList()));
-    }
-
-    //for retrieving any information from token we will need the secret key
+    //for retrieveing any information from token we will need the secret key
     private Claims getAllClaimsFromToken(String token) {
-        return Jwts.parser().setSigningKey(secret.getBytes()).parseClaimsJws(token).getBody();
+        return Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody();
     }
 
     //check if the token has expired
@@ -91,7 +90,7 @@ public class JwtTokenUtil implements Serializable {
     }
 
     //validate token
-    public boolean validateToken(String token, @NotNull UserDetails userDetails) {
+    public Boolean validateToken(String token, @NotNull UserDetails userDetails) {
         final String username = getUsernameFromToken(token);
         return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
     }

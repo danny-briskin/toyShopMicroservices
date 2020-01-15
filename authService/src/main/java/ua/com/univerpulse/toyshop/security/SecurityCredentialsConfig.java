@@ -3,6 +3,7 @@ package ua.com.univerpulse.toyshop.security;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -18,12 +19,19 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @EnableWebSecurity    // Enable security config. This annotation denotes config for spring security.
 public class SecurityCredentialsConfig extends WebSecurityConfigurerAdapter {
-
+    //TODO switch to real user service
     @Autowired
     private UserDetailsService userDetailsService;
-
     @Autowired
-    private JwtConfig jwtConfig;
+    private JwtTokenUtil jwtTokenUtil;
+    @Autowired
+    private JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+
+    @Bean
+    @Override
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+        return super.authenticationManagerBean();
+    }
 
     @Override
     protected void configure(@NotNull HttpSecurity http) throws Exception {
@@ -41,14 +49,17 @@ public class SecurityCredentialsConfig extends WebSecurityConfigurerAdapter {
                 // What's the authenticationManager()?
                 // An object provided by WebSecurityConfigurerAdapter, used to authenticate the user passing user's credentials
                 // The filter needs this auth manager to authenticate the user.
-                .addFilter(new JwtUsernameAndPasswordAuthenticationFilter(
-                        authenticationManager(), jwtConfig))
+//                .addFilter(new JwtUsernameAndPasswordAuthenticationFilter(
+//                        authenticationManager(), jwtTokenUtil))
                 .authorizeRequests()
-                .antMatchers(jwtConfig.getUri(), "/login").permitAll()
+                .antMatchers(jwtTokenUtil.getUri()).permitAll()
                 // any other requests must be authenticated
-                .anyRequest().authenticated().and()
-                .httpBasic()
-                .and().formLogin().loginProcessingUrl("/auth")
+                .anyRequest().authenticated().and().exceptionHandling()
+                .authenticationEntryPoint(jwtAuthenticationEntryPoint)
+//                .and()
+//                .httpBasic()
+//                .and().formLogin()
+        //.loginProcessingUrl("/auth")
         ;
     }
 
@@ -58,11 +69,6 @@ public class SecurityCredentialsConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(@NotNull AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
-    }
-
-    @Bean
-    public JwtConfig jwtConfig() {
-        return new JwtConfig();
     }
 
     @Bean

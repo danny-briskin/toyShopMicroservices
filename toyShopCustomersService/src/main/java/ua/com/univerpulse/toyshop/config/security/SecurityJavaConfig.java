@@ -30,19 +30,11 @@ public class SecurityJavaConfig extends WebSecurityConfigurerAdapter {
 
     private JwtRequestFilter jwtRequestFilter;
 
-//    private TokenProvider tokenProvider;
-
-//    private final RestAuthenticationEntryPoint restAuthenticationEntryPoint;
-
     public SecurityJavaConfig(
-//            @Autowired RestAuthenticationEntryPoint restAuthenticationEntryPoint,
-//            @Autowired TokenProvider tokenProvider
             @Autowired JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint
             , @Autowired UserDetailsService userDetailsService
             , @Autowired JwtRequestFilter jwtRequestFilter
     ) {
-//        this.restAuthenticationEntryPoint = restAuthenticationEntryPoint;
-//        this.tokenProvider = tokenProvider;
         this.userDetailsService = userDetailsService;
         this.jwtAuthenticationEntryPoint = jwtAuthenticationEntryPoint;
         this.jwtRequestFilter = jwtRequestFilter;
@@ -57,20 +49,8 @@ public class SecurityJavaConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     public void configureGlobal(@NotNull AuthenticationManagerBuilder auth) throws Exception {
-// configure AuthenticationManager so that it knows from where to load
-// user for matching credentials
-// Use BCryptPasswordEncoder
-        auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder())
-        ;
+        auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
     }
-//    @Autowired
-//    public void configureGlobal(@NotNull AuthenticationManagerBuilder auth)
-//            throws Exception {
-//        auth.inMemoryAuthentication()
-//                .withUser("user").password("{noop}user").roles("USER");
-//        auth.inMemoryAuthentication()
-//                .withUser("admin").password("{noop}admin").roles(ADMIN);
-//    }
 
     @Override
     protected void configure(@NotNull HttpSecurity http) throws Exception {
@@ -78,11 +58,6 @@ public class SecurityJavaConfig extends WebSecurityConfigurerAdapter {
                 .csrf()
                 //.and().cors()
                 .disable()
-//                .exceptionHandling()
-//                .authenticationEntryPoint(restAuthenticationEntryPoint)
-//                .and()
-//                .httpBasic() // optional, if you want to access
-//                .and()
                 .authorizeRequests()
                 .antMatchers("/api/explorer/**", "/authenticate/**"
                         , "/h2-console/**")
@@ -94,13 +69,6 @@ public class SecurityJavaConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/paymentCreate", "/api/paymentUpdate/**"
                         , "/api/paymentDelete/**", "/api/createCustomer", "/api/deleteCustomer/**")
                 .hasRole(ADMIN)
-//                .antMatchers("/*").permitAll()
-                //.and().httpBasic().realmName("Univerpulse")
-//                .and()
-//                .formLogin()
-//                .failureHandler(new SimpleUrlAuthenticationFailureHandler())
-//                .and()
-//                .logout()
                 .anyRequest().authenticated().and().exceptionHandling()
                 .authenticationEntryPoint(jwtAuthenticationEntryPoint)
                 .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
@@ -110,16 +78,9 @@ public class SecurityJavaConfig extends WebSecurityConfigurerAdapter {
         http.headers().frameOptions().sameOrigin();
     }
 
-
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-//
-//
-//    /* To allow Pre-flight [OPTIONS] request from browser */
-//    @Override
-//    public void configure(@NotNull WebSecurity web) {
-//        web.ignoring().antMatchers(HttpMethod.OPTIONS, "/**");
-//    }
+
 }

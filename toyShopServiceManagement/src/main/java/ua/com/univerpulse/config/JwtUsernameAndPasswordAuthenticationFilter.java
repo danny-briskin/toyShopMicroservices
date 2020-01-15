@@ -8,7 +8,6 @@ import lombok.extern.log4j.Log4j2;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.http.*;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -37,23 +36,13 @@ public class JwtUsernameAndPasswordAuthenticationFilter
     private RestTemplate restTemplate;
     private Claims claims;
 
-    // We use auth manager to validate the user credentials
-    private AuthenticationManager authManager;
-
     private final JwtConfig jwtConfig;
 
-    public JwtUsernameAndPasswordAuthenticationFilter(AuthenticationManager authManager
-            , @NotNull JwtConfig jwtConfig
+    public JwtUsernameAndPasswordAuthenticationFilter(@NotNull JwtConfig jwtConfig
             , RestTemplate restTemplate
     ) {
-        this.authManager = authManager;
         this.restTemplate = restTemplate;
         this.jwtConfig = jwtConfig;
-
-        // By default, UsernamePasswordAuthenticationFilter listens to "/login" path.
-        // In our case, we use "/auth". So, we need to override the defaults.
-//        this.setRequiresAuthenticationRequestMatcher(
-//                new AntPathRequestMatcher(jwtConfig.getUri()));
     }
 
     @Override

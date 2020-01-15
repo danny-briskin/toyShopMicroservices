@@ -33,7 +33,6 @@ public class RouteFilter extends ZuulFilter {
         RequestContext.getCurrentContext()
                 .addZuulRequestHeader("Authorization", "Bearer "
                         + JwtUsernameAndPasswordAuthenticationFilter.TOKEN);
-
         return null;
     }
 }

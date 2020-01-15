@@ -390,3 +390,13 @@ INSERT INTO payments(paymentDate, paymentAmount, channel, customerID)
 VALUES (CURRENT_TIMESTAMP(), 0.37, 'Channel #22', 1);
 INSERT INTO payments(paymentDate, paymentAmount, channel, customerID)
 VALUES (CURRENT_TIMESTAMP(), 0.11, 'Channel #35', 2);
+
+
+insert into st_users values (1,'User','Userman','user@user.us'
+,'$2a$10$vPSBrMHi8FG4lsuDeKzDZugMNbB79thLzQr.i/w2yzLmJiMNqhUXK',true,CURRENT_TIMESTAMP());
+insert into st_users values (2,'Admin','Adminson','admin@admin.ad'
+,'$2a$10$HK0whZlfWzHbedzmY1RhQuEZesVMAU87mFFe6Ylb9JMS/Kh7s6Rz.',true,CURRENT_TIMESTAMP());
+
+insert into st_roles values (1,'ADMIN',2);
+insert into st_roles values (2,'USER',1);
+--insert into st_roles values (3,'USER',2);

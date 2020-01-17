@@ -3,6 +3,7 @@ package ua.com.univerpulse.toyshop.config.security;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import lombok.extern.log4j.Log4j2;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -24,6 +25,7 @@ import java.util.stream.Collectors;
  * for toyshopmicros project.
  */
 @Component
+@Log4j2
 public class JwtTokenUtil implements Serializable {
     private static final long serialVersionUID = -25502165626007488L;
     @Value("${jwt.tokenLive:#{24*60*60}}")
@@ -63,9 +65,9 @@ public class JwtTokenUtil implements Serializable {
     }
 
     //check if the token has expired
-    @NotNull
-    private Boolean isTokenExpired(String token) {
+    public boolean isTokenExpired(String token) {
         final Date expiration = getExpirationDateFromToken(token);
+        log.warn("Token expiration [" + expiration + "]. Now is [" + new Date() + "]");
         return expiration.before(new Date());
     }
 

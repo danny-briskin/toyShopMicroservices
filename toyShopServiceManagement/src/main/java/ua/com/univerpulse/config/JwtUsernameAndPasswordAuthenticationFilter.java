@@ -49,6 +49,7 @@ public class JwtUsernameAndPasswordAuthenticationFilter
     public Authentication attemptAuthentication(@NotNull HttpServletRequest request
             , HttpServletResponse response) {
         if (this.claims == null || !this.isTokenValid()) {
+            log.warn("Let's go for another token...");
             String username = obtainUsername(request);
             String password = obtainPassword(request);
             TOKEN = this.getToken(username, password);
@@ -65,7 +66,7 @@ public class JwtUsernameAndPasswordAuthenticationFilter
     }
 
     private boolean isTokenValid() {
-        return !this.claims.getExpiration().before(new Date());
+        return this.claims.getExpiration().after(new Date());
     }
 
     @Nullable

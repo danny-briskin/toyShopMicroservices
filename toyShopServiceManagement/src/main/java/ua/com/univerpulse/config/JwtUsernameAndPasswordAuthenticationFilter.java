@@ -74,8 +74,10 @@ public class JwtUsernameAndPasswordAuthenticationFilter
 
         String username = this.claims.getSubject();
         if (username != null) {
+            log.warn("User in token " + username);
             @SuppressWarnings("unchecked")
             List<String> authorities = (List<String>) this.claims.get("authorities");
+            log.warn("authorities in token " + authorities);
             UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(
                     username, null, authorities.stream()
                     .map(SimpleGrantedAuthority::new).collect(Collectors.toList()));

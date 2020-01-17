@@ -9,6 +9,7 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,7 +17,6 @@ import org.springframework.web.bind.annotation.RestController;
 import ua.com.univerpulse.toyshop.model.JwtRequest;
 import ua.com.univerpulse.toyshop.model.JwtResponse;
 import ua.com.univerpulse.toyshop.security.JwtTokenUtil;
-import ua.com.univerpulse.toyshop.security.UserDetailsServiceImpl;
 
 /**
  * @author Danny Briskin (DBriskin@qaconsultants.com)
@@ -31,7 +31,7 @@ public class JwtAuthenticationController {
     @Autowired
     private JwtTokenUtil jwtTokenUtil;
     @Autowired
-    private UserDetailsServiceImpl appUserDetailService;
+    private UserDetailsService appUserDetailService;
 
     @PostMapping(value = "/auth")
     public ResponseEntity<JwtResponse> createAuthenticationToken
@@ -41,6 +41,7 @@ public class JwtAuthenticationController {
         final UserDetails userDetails = appUserDetailService
                 .loadUserByUsername(authenticationRequest.getUsername());
         final String token = jwtTokenUtil.generateToken(userDetails);
+        log.warn("Sending auth token [" + token + "]");
         return ResponseEntity.ok(new JwtResponse(token));
     }
 

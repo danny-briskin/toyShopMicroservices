@@ -397,6 +397,6 @@ insert into st_users values (1,'User','Userman','user@user.us'
 insert into st_users values (2,'Admin','Adminson','admin@admin.ad'
 ,'$2a$10$HK0whZlfWzHbedzmY1RhQuEZesVMAU87mFFe6Ylb9JMS/Kh7s6Rz.',true,CURRENT_TIMESTAMP());
 
-insert into st_roles values (1,'ADMIN',2);
-insert into st_roles values (2,'USER',1);
---insert into st_roles values (3,'USER',2);
+insert into st_roles values (1,'ROLE_ADMIN',2);
+insert into st_roles values (2,'ROLE_USER',1);
+insert into st_roles values (3,'ROLE_USER',2);

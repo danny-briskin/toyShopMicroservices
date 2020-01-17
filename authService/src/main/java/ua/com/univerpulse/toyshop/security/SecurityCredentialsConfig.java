@@ -19,7 +19,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @EnableWebSecurity
 public class SecurityCredentialsConfig extends WebSecurityConfigurerAdapter {
-    //TODO switch to real user service
     @Autowired
     private UserDetailsService userDetailsService;
     @Autowired
@@ -41,11 +40,12 @@ public class SecurityCredentialsConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers(jwtTokenUtil.getUri()).permitAll()
+                .antMatchers(jwtTokenUtil.getUri(), "/h2-console/**").permitAll()
                 // any other requests must be authenticated
                 .anyRequest().authenticated().and().exceptionHandling()
-                .authenticationEntryPoint(jwtAuthenticationEntryPoint)
-        ;
+                .authenticationEntryPoint(jwtAuthenticationEntryPoint);
+        //for h2 console
+        http.headers().frameOptions().sameOrigin();
     }
 
     // Spring has UserDetailsService interface, which can be overridden to provide our implementation for fetching user from database (or any other source).

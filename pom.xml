@@ -21,8 +21,8 @@
     </properties>
 
     <modules>
-        <module>toyShopCustomersService</module>
-        <module>toyShopPaymentsService</module>
+        <module>toyShopService</module>
+        <module>toyShopCustomerAdditionalService</module>
         <module>toyShopDiscovery</module>
         <module>toyShopServiceManagement</module>
     </modules>

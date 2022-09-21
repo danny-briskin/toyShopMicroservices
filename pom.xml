@@ -22,7 +22,8 @@
 
     <modules>
         <module>toyShopService</module>
-        <module>toyShopCustomerAdditionalService</module>
+        <module>toyShopCustomerAdditionalService1</module>
+        <module>toyShopCustomerAdditionalService2</module>
         <module>toyShopDiscovery</module>
         <module>toyShopServiceManagement</module>
     </modules>

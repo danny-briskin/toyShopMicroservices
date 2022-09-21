@@ -1,10 +1,8 @@
 package ua.com.univerpulse.toyshop.model.services;
 
-import lombok.SneakyThrows;
 import org.jetbrains.annotations.NotNull;
 import ua.com.univerpulse.toyshop.exceptions.CustomerNotFoundException;
 import ua.com.univerpulse.toyshop.exceptions.DateParseException;
-import ua.com.univerpulse.toyshop.model.dto.CustomerData;
 import ua.com.univerpulse.toyshop.model.dto.CustomerDto;
 import ua.com.univerpulse.toyshop.model.entities.Customer;
 
@@ -18,6 +16,4 @@ public interface CustomerService {
 
     Customer findById(Integer id);
 
-    @SneakyThrows
-    CustomerData getAdditionalCustomerInfo(Integer id);
 }

@@ -1,6 +1,5 @@
 package ua.com.univerpulse.toyshop.model.services;
 
-import lombok.SneakyThrows;
 import lombok.extern.log4j.Log4j2;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
@@ -10,14 +9,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ua.com.univerpulse.toyshop.exceptions.CustomerNotFoundException;
 import ua.com.univerpulse.toyshop.exceptions.DateParseException;
-import ua.com.univerpulse.toyshop.model.dto.CustomerData;
 import ua.com.univerpulse.toyshop.model.dto.CustomerDto;
 import ua.com.univerpulse.toyshop.model.entities.Customer;
 import ua.com.univerpulse.toyshop.model.repositories.CustomerRepository;
 import ua.com.univerpulse.toyshop.model.repositories.PaymentRepository;
-import ua.com.univerpulse.toyshop.rest.RestRequest;
-import ua.com.univerpulse.toyshop.rest.RestResponse;
-import ua.com.univerpulse.toyshop.rest.RestWebserviceActions;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
@@ -31,15 +26,11 @@ public class CustomerServiceImpl extends AbstractService implements CustomerServ
     private final CustomerRepository customerRepository;
     private final PaymentRepository paymentRepository;
 
-    private final RestWebserviceActions restWebserviceActions;
-
     @Contract(pure = true)
     public CustomerServiceImpl(@Autowired CustomerRepository customerRepository
-            , @Autowired PaymentRepository paymentRepository
-            , RestWebserviceActions restWebserviceActions) {
+            , @Autowired PaymentRepository paymentRepository) {
         this.customerRepository = customerRepository;
         this.paymentRepository = paymentRepository;
-        this.restWebserviceActions = restWebserviceActions;
     }
 
     @Override
@@ -91,16 +82,4 @@ public class CustomerServiceImpl extends AbstractService implements CustomerServ
         return this.customerRepository.findById(id).orElse(null);
     }
 
-    @SneakyThrows
-    @Override
-    public CustomerData getAdditionalCustomerInfo(Integer id) {
-        RestRequest restRequest = new RestRequest("http://localhost:7080/api/customer/info/1"
-                , "GET", 200, id + "");
-
-
-//        restRequest.addHeader(HttpHeaders.AUTHORIZATION,"token");
-        @Nullable RestResponse response =
-                restWebserviceActions.sendRestRequestTo(restRequest, true);
-        return restWebserviceActions.parseRestResponse(response.getJson(), CustomerData.class);
-    }
 }

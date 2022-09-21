@@ -38,6 +38,8 @@ public class AppController {
     private final PaymentService paymentService;
     private final Environment environment;
 
+    private final CustomerAdditionalInfoClient customerAdditionalInfoClient;
+
     private static final String NOT_FOUND = "] was not found";
     private static final String CUSTOMER = "Customer with ID [";
     private static final String DELETED = "] was deleted";
@@ -45,10 +47,12 @@ public class AppController {
     @Contract(pure = true)
     public AppController(@Autowired CustomerService customerService
             , @Autowired PaymentService paymentService
-            , @Autowired Environment environment) {
+            , @Autowired Environment environment
+            , CustomerAdditionalInfoClient customerAdditionalInfoClient) {
         this.customerService = customerService;
         this.paymentService = paymentService;
         this.environment = environment;
+        this.customerAdditionalInfoClient = customerAdditionalInfoClient;
     }
 
 
@@ -103,7 +107,8 @@ public class AppController {
     public ResponseEntity<CustomerCompleteDto> findCustomerComplete(@PathVariable Integer id, Principal principal) {
         OAuth2Authentication authentication = (OAuth2Authentication) principal;
         Customer customer = customerService.findById(id);
-        CustomerData custData = customerService.getAdditionalCustomerInfo(id);
+        CustomerData custData =customerAdditionalInfoClient.getCustomerAdditionalInfo(id);
+//                customerService.getAdditionalCustomerInfo(id);
         log.warn(custData);
         CustomerCompleteDto customerDto = new CustomerCompleteDto(customer, custData);
         customerDto.setBillingAddress(authentication.getName());

@@ -108,7 +108,6 @@ public class AppController {
         OAuth2Authentication authentication = (OAuth2Authentication) principal;
         Customer customer = customerService.findById(id);
         CustomerData custData =customerAdditionalInfoClient.getCustomerAdditionalInfo(id);
-//                customerService.getAdditionalCustomerInfo(id);
         log.warn(custData);
         CustomerCompleteDto customerDto = new CustomerCompleteDto(customer, custData);
         customerDto.setBillingAddress(authentication.getName());

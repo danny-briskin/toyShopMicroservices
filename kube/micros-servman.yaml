@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: micros-servman
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: micros-servman
+  template:
+    metadata:
+      labels:
+        app: micros-servman
+    spec:
+      containers:
+        - name: micros-servman
+          image: micros-servman:latest
+          ports:
+            - containerPort: 8081
+          env:
+            - name: EUREKA_ZONE
+              value: http://discUser:discPassword@micros-eureka:7000/eureka/
+          imagePullPolicy: Never
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: micros-servman
+spec:
+  selector:
+    app: micros-servman
+  ports:
+    - port: 8081
+      targetPort: 8081
+  type: LoadBalancer

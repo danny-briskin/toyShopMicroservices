@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: micros-eureka
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: micros-eureka
+  template:
+    metadata:
+      labels:
+        app: micros-eureka
+    spec:
+      containers:
+        - name: micros-eureka
+          image: micros-eureka:latest
+          ports:
+            - containerPort: 7000
+          imagePullPolicy: Never
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: micros-eureka
+spec:
+  selector:
+    app: micros-eureka
+  ports:
+    - port: 7000
+      targetPort: 7000
+  type: LoadBalancer

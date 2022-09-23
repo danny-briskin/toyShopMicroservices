@@ -9,7 +9,7 @@ import ua.com.univerpulse.toyshop.model.dto.CustomerData;
  * @author Danny Briskin (DBriskin@qaconsultants.com)
  * for toyshopmicroservices project.
  */
-@FeignClient("CUSTOMER-ADDITIONAL-SERVICE")
+@FeignClient("customer-additional-service")
 public interface CustomerAdditionalInfoClient {
     @GetMapping("/api/customer/info/{id}")
     CustomerData getCustomerAdditionalInfo(@PathVariable Integer id);

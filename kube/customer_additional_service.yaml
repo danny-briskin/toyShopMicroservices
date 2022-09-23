@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: customer-additional-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: customer-additional-service
+  template:
+    metadata:
+      labels:
+        app: customer-additional-service
+    spec:
+      containers:
+        - name: customer-additional-service
+          image: customer-additional-service:latest
+          ports:
+            - containerPort: 7081
+          imagePullPolicy: Never
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: customer-additional-service
+spec:
+  selector:
+    app: customer-additional-service
+  ports:
+    - port: 7081
+      targetPort: 7081
+  type: ClusterIP

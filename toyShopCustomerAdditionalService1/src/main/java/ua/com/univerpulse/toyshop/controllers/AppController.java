@@ -1,7 +1,7 @@
 package ua.com.univerpulse.toyshop.controllers;
 
 import lombok.extern.log4j.Log4j2;
-import org.apache.commons.lang.RandomStringUtils;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

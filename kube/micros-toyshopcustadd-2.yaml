@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: micros-toyshopcustadd-2
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: micros-toyshopcustadd-2
+  template:
+    metadata:
+      labels:
+        app: micros-toyshopcustadd-2
+    spec:
+      containers:
+        - name: micros-toyshopcustadd-2
+          image: micros-toyshopcustadd-2:latest
+          ports:
+            - containerPort: 7081
+          env:
+            - name: EUREKA_ZONE
+              value: http://discUser:discPassword@micros-eureka:7000/eureka/
+            - name: SERVER_CONT
+              value: micros-toyshopcustadd-2
+          imagePullPolicy: Never
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: micros-toyshopcustadd-2
+spec:
+  selector:
+    app: micros-toyshopcustadd-2
+  ports:
+    - port: 7081
+      targetPort: 7081
+  type: LoadBalancer

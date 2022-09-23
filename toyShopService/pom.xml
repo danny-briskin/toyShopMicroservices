@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>toyShopService</artifactId>
-    <version>0.0.1</version>
+    <version>0.0.3</version>
     <description>Toy Shop Service</description>
     <packaging>jar</packaging>
     <url>http://localhost:7070</url>
@@ -13,7 +13,6 @@
         <java.version>1.8</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <spring-cloud.version>Hoxton.SR1</spring-cloud.version>
 
     </properties>
 	 <parent>
@@ -23,10 +22,6 @@
     </parent>
 
     <dependencies>
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
-        </dependency>
         <dependency>
             <groupId>org.springframework.security.oauth.boot</groupId>
             <artifactId>spring-security-oauth2-autoconfigure</artifactId>
@@ -41,7 +36,23 @@
         </dependency>
         <dependency>
             <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-netflix-hystrix</artifactId>
+            <artifactId>spring-cloud-starter-loadbalancer</artifactId>
+        </dependency>
+
+
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-kubernetes-client-loadbalancer</artifactId>
+        </dependency>
+
+
+        <!--        <dependency>-->
+<!--            <groupId>org.springframework.cloud</groupId>-->
+<!--            <artifactId>spring-cloud-starter-netflix-hystrix</artifactId>-->
+<!--        </dependency>-->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-task</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>

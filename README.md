@@ -13,6 +13,10 @@ Build images
 
 `docker build -t micros-toyshopcustadd-2 .`
 
+Single service for K8ts only
+
+`docker build -t customer-additional-service .`
+
 
 Run containers
 `docker run --name c-micros-eureka -p 7000:7000 --network=micros-toyshop --rm micros-eureka`
@@ -62,15 +66,11 @@ Restart service
 
 Install service
 
-`minikube service micros-eureka`
-
-`minikube service micros-servman`
 
 `minikube service micros-toyshopserv`
 
-`minikube service micros-toyshopcustadd-1`
-
-`minikube service micros-toyshopcustadd-2`
-
 `minikube service customer-additional-service`
+
+## Scale
+`kubectl scale --replicas=5 deployment/customer-additional-service`
 
